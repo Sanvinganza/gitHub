@@ -112,6 +112,7 @@ export default function Repositories() {
     const dispatch = useDispatch();
 
     let [isLoading, setIsLoading] = useState(false);
+    let [page, setPage] = useState(1);
 
     let loadRepositories = async (data) => {
 
@@ -134,53 +135,53 @@ export default function Repositories() {
         } else {
             repositories = [];
         }
+        setPage(data.selected)
         dispatch(addRepositories(repositories));
     };
 
     return (
         <>
-            {isLoading ? <div class="loader"></div> :
+            <div className={classes.root}>
 
-                repositories.length !== 0 ?
+                <div className={classes.container}>
+                    {isLoading ? <div class="loader"></div> :
 
-                    <div className={classes.root}>
-
-                        <div className={classes.container}>
-                            <div className={classes.title}>Repositories({repositoriesValue})</div>
-                            {
-                                repositories.map((el) => {
-                                    return (
-                                        <div key={el.url} className={classes.root_repos}>
-                                            <a href={el.url} className={classes.name}>{el.name}</a>
-                                            <div className={classes.description}>{el.description}</div>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-
-                        <ReactPaginate
-                            pageCount={repositoriesValue / 4}
-                            previousClassName={classes.previous}
-                            pageRangeDisplayed={2}
-                            pageClassName={classes.page}
-                            pageLinkClassName={classes.pageLink}
-                            marginPagesDisplayed={1}
-                            nextClassName={classes.next}
-                            breakLabel={'...'}
-                            containerClassName={classes.pagination}
-                            activeClassName={classes.active}
-                            breakClassName={classes.break}
-                            previousLabel={<div className={classes.previousLabel}></div>}
-                            onPageChange={loadRepositories}
-                            nextLabel={<div className={classes.nextLabel}></div>}
-                        />
-
-                    </div>
-                    :
-                    <RepositoriesNotFound />
-
-            }
+                        repositories.length !== 0 ?
+                            <div>
+                                <div className={classes.title}>Repositories({repositoriesValue})</div>
+                                {
+                                    repositories.map((el) => {
+                                        return (
+                                            <div key={el.url} className={classes.root_repos}>
+                                                <a href={el.url} className={classes.name}>{el.name}</a>
+                                                <div className={classes.description}>{el.description}</div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            :
+                            <RepositoriesNotFound />
+                    }
+                    <ReactPaginate
+                        pageCount={repositoriesValue / 4}
+                        previousClassName={classes.previous}
+                        pageRangeDisplayed={2}
+                        pageClassName={classes.page}
+                        pageLinkClassName={classes.pageLink}
+                        marginPagesDisplayed={1}
+                        nextClassName={classes.next}
+                        breakLabel={'...'}
+                        containerClassName={classes.pagination}
+                        activeClassName={classes.active}
+                        breakClassName={classes.break}
+                        previousLabel={<div className={classes.previousLabel}></div>}
+                        onPageChange={loadRepositories}
+                        nextLabel={<div className={classes.nextLabel}></div>}
+                        initialPage={page}
+                    />
+                </div>
+            </div>
         </>
     );
 } 
