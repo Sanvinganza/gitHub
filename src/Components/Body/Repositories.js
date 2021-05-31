@@ -5,6 +5,8 @@ import RepositoriesNotFound from './RepositoriesNotFound';
 import ReactPaginate from 'react-paginate';
 import { useDispatch } from 'react-redux';
 import { addRepositories } from '../../redux/actions';
+import useMediaQuery from '../../useMediaQuery';
+
 const useStyle = makeStyles((theme) => ({
     root: {
         minHeight: '768px',
@@ -13,17 +15,27 @@ const useStyle = makeStyles((theme) => ({
         maxWidth: '877px',
         paddingTop: '28px',
     },
+    rootMin: {
+        marginLeft: '0',
+    },
     container: {
         display: 'flex',
         flexDirection: 'column',
+        height: '877px',
+    },
+    container_repos: {
+        // height: '877px',
     },
     title: {
         fontSize: '32px',
         fontWeight: '600',
     },
+    titleMin: {
+        fontSize: '24px'
+    },
     root_repos: {
         maxHeight: '112px',
-        height: '100%',
+        // height: '100%',
         padding: '24px 32px',
         borderRadius: '6px',
         display: 'flex',
@@ -36,12 +48,18 @@ const useStyle = makeStyles((theme) => ({
         fontWeight: '500',
         fontSize: '24px',
     },
+    nameMin: {
+        fontSize: '18px',   
+    },
     description: {
         paddingTop: '16px',
         textAlign: 'start',
         fontWeight: '400',
         fontSize: '16px',
         color: 'black',
+    },
+    descriptionMin: {
+        fontSize: '14px',
     },
     pagination: {
         display: 'flex',
@@ -105,12 +123,13 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export default function Repositories() {
+    const matches = useMediaQuery('(min-width: 1000px)');
     const classes = useStyle();
-    let repositories = useSelector(state => state.repositories);
+    const dispatch = useDispatch();
     const login = useSelector(state => state.user.login)
     const repositoriesValue = useSelector(state => state.user.public_repos);
-    const dispatch = useDispatch();
 
+    let repositories = useSelector(state => state.repositories);
     let [isLoading, setIsLoading] = useState(false);
     let [page, setPage] = useState(1);
 
@@ -141,20 +160,20 @@ export default function Repositories() {
 
     return (
         <>
-            <div className={classes.root}>
+            <div className={matches? classes.root: classes.rootMin}>
 
                 <div className={classes.container}>
                     {isLoading ? <div class="loader"></div> :
 
                         repositories.length !== 0 ?
-                            <div>
-                                <div className={classes.title}>Repositories({repositoriesValue})</div>
+                            <div className={classes.container_repos}>
+                                <div className={matches? classes.title: classes.titleMin}>Repositories({repositoriesValue})</div>
                                 {
                                     repositories.map((el) => {
                                         return (
-                                            <div key={el.url} className={classes.root_repos}>
-                                                <a href={el.url} className={classes.name}>{el.name}</a>
-                                                <div className={classes.description}>{el.description}</div>
+                                            <div key={el.url} className={matches? classes.root_repos: classes.root_reposMin}>
+                                                <a href={el.url} className={matches? classes.name: classes.nameMin}>{el.name}</a>
+                                                <div className={matches? classes.description: classes.descriptionMin}>{el.description}</div>
                                             </div>
                                         )
                                     })
@@ -163,23 +182,27 @@ export default function Repositories() {
                             :
                             <RepositoriesNotFound />
                     }
-                    <ReactPaginate
-                        pageCount={repositoriesValue / 4}
-                        previousClassName={classes.previous}
-                        pageRangeDisplayed={2}
-                        pageClassName={classes.page}
-                        pageLinkClassName={classes.pageLink}
-                        marginPagesDisplayed={1}
-                        nextClassName={classes.next}
-                        breakLabel={'...'}
-                        containerClassName={classes.pagination}
-                        activeClassName={classes.active}
-                        breakClassName={classes.break}
-                        previousLabel={<div className={classes.previousLabel}></div>}
-                        onPageChange={loadRepositories}
-                        nextLabel={<div className={classes.nextLabel}></div>}
-                        initialPage={page}
-                    />
+                    {repositories.length !== 0 ?
+                        <ReactPaginate
+                            pageCount={repositoriesValue / 4}
+                            previousClassName={classes.previous}
+                            pageRangeDisplayed={2}
+                            pageClassName={classes.page}
+                            pageLinkClassName={classes.pageLink}
+                            marginPagesDisplayed={1}
+                            nextClassName={classes.next}
+                            breakLabel={'...'}
+                            containerClassName={classes.pagination}
+                            activeClassName={classes.active}
+                            breakClassName={classes.break}
+                            previousLabel={<div className={classes.previousLabel}></div>}
+                            onPageChange={loadRepositories}
+                            nextLabel={<div className={classes.nextLabel}></div>}
+                            initialPage={page}
+                        />
+                        :
+                        false
+                    }
                 </div>
             </div>
         </>

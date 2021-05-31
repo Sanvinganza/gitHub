@@ -26,7 +26,8 @@ const useStyle = makeStyles((theme) => ({
     borderRadius: '6px',
     border: '0',
     marginLeft: '22px',
-    minWidth: '500px',
+    width: '500px',
+    marginRight: '56px',
     backgroundImage: 'url(search24.png)',
     backgroundRepeat: 'no-repeat',
     backgroundPositionY: 'center',
@@ -47,7 +48,6 @@ export default function Header() {
     if (event.key === 'Enter' && inputUser) {
       let response_user = await fetch('https://api.github.com/users/' + inputUser);
       let response_repos = await fetch('https://api.github.com/users/' + inputUser + '/repos?per_page=4');
-      let userInfo;
       let repositories;
 
       if (!response_user.ok) {dispatch(userNotFound()); return}

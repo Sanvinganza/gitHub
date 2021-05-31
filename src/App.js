@@ -12,7 +12,6 @@ const useStyle = makeStyles((theme) => ({
     flexDirection: 'column',
     height: '100%',
     minHeight: '877px',
-    backgroundColor: '#E5E5E5',
   },
   icon: {
     width: '64.17px',
