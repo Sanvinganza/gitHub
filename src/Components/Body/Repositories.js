@@ -84,6 +84,10 @@ const useStyle = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'flex-end',
     },
+    paginationMin: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
     previousLabel: {
         width: '24px',
         height: '24px',
@@ -211,7 +215,7 @@ export default function Repositories() {
                             marginPagesDisplayed={1}
                             nextClassName={classes.next}
                             breakLabel={'...'}
-                            containerClassName={classes.pagination}
+                            containerClassName={matches? classes.pagination : classes.paginationMin}
                             activeClassName={classes.active}
                             breakClassName={classes.break}
                             previousLabel={<div className={classes.previousLabel}></div>}
