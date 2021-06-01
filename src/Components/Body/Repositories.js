@@ -161,7 +161,7 @@ export default function Repositories() {
     const dispatch = useDispatch();
     const login = useSelector(state => state.user.login)
     const repositoriesValue = useSelector(state => state.user.public_repos);
-
+    const matches500 = useMediaQuery('(min-width: 500px)');
     let repositories = useSelector(state => state.repositories);
     let [isLoading, setIsLoading] = useState(false);
     let [page, setPage] = useState(0);
@@ -216,9 +216,9 @@ export default function Repositories() {
                     }
                     {repositories.length !== 0 ?
                         <div className={classes.pagination_container}>
-                            <div className={classes.pagination_description}>
+                            {matches500? <div className={classes.pagination_description}>
                                 {(page*4 + 1) + ' - ' +((page*4 + 4 > repositoriesValue? repositoriesValue : page*4 + 4))+ ' of ' + repositoriesValue + ' items'}
-                            </div>
+                            </div> : false}
                             <ReactPaginate
                                 pageCount={repositoriesValue / 4}
                                 previousClassName={classes.previous}
