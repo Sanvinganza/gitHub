@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { addRepositories, addUser, userNotFound } from '../redux/actions';
+import useMediaQuery from '../useMediaQuery';
 
 const useStyle = makeStyles((theme) => ({
   grow: {
@@ -36,11 +37,27 @@ const useStyle = makeStyles((theme) => ({
     fontSize: '14px',
     fontWeight: '400',
   },
+  searchMin: {
+    height: '40px',
+    maxWidth: '500px',
+    borderRadius: '6px',
+    border: '0',
+    marginLeft: '12px',
+    width: '60vw',
+    backgroundImage: 'url(search24.png)',
+    backgroundRepeat: 'no-repeat',
+    backgroundPositionY: 'center',
+    backgroundPositionX: '19px',
+    textIndent: '44px',
+    fontSize: '12px',
+    fontWeight: '400',
+  },
 }));
 
 export default function Header() {
   const classes = useStyle();
   const dispatch = useDispatch();
+  const matches = useMediaQuery('(min-width: 1000px)');
 
   async function handleChange(event) {
     const inputUser = event.target.value;
@@ -76,7 +93,7 @@ export default function Header() {
       <AppBar position="static">
         <div className={classes.title}>
           <img alt='' className={classes.icon} />
-          <input type="text" name='input' className={classes.search} onKeyPress={handleChange} placeholder='Enter GitHub username' />
+          <input type="text" name='input' className={matches? classes.search : classes.searchMin} onKeyPress={handleChange} placeholder='Enter GitHub username' />
         </div>
       </AppBar>
     </>

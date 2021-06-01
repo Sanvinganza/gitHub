@@ -9,38 +9,51 @@ import useMediaQuery from '../../useMediaQuery';
 
 const useStyle = makeStyles((theme) => ({
     root: {
-        minHeight: '768px',
+        minHeight: '568px',
         marginLeft: '96px',
         width: '100%',
         maxWidth: '877px',
         paddingTop: '28px',
     },
     rootMin: {
+        marginLeft: '96px',
+        width: '100%',
+        maxWidth: '877px',
+        paddingTop: '28px',
         marginLeft: '0',
     },
     container: {
         display: 'flex',
         flexDirection: 'column',
-        height: '877px',
+        // height: '877px',
     },
     container_repos: {
-        // height: '877px',
+        // height: '577px',
     },
     title: {
         fontSize: '32px',
         fontWeight: '600',
     },
     titleMin: {
-        fontSize: '24px'
+        fontSize: '24px',
+        fontWeight: '600',
+        textAlign: 'center',
     },
     root_repos: {
         maxHeight: '112px',
-        // height: '100%',
         padding: '24px 32px',
         borderRadius: '6px',
         display: 'flex',
         flexDirection: 'column',
         margin: '24px 0',
+        backgroundColor: '#ffffff',
+    },
+    root_reposMin: {
+        padding: '18px 24px',
+        borderRadius: '6px',
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '16px 0',
         backgroundColor: '#ffffff',
     },
     name: {
@@ -49,6 +62,8 @@ const useStyle = makeStyles((theme) => ({
         fontSize: '24px',
     },
     nameMin: {
+        color: '#0064EB',
+        fontWeight: '500',
         fontSize: '18px',   
     },
     description: {
@@ -60,6 +75,10 @@ const useStyle = makeStyles((theme) => ({
     },
     descriptionMin: {
         fontSize: '14px',
+        paddingTop: '16px',
+        textAlign: 'start',
+        fontWeight: '400',
+        color: 'black',
     },
     pagination: {
         display: 'flex',
@@ -131,7 +150,7 @@ export default function Repositories() {
 
     let repositories = useSelector(state => state.repositories);
     let [isLoading, setIsLoading] = useState(false);
-    let [page, setPage] = useState(1);
+    let [page, setPage] = useState(0);
 
     let loadRepositories = async (data) => {
 
@@ -186,7 +205,7 @@ export default function Repositories() {
                         <ReactPaginate
                             pageCount={repositoriesValue / 4}
                             previousClassName={classes.previous}
-                            pageRangeDisplayed={2}
+                            pageRangeDisplayed={matches? 2 : 1}
                             pageClassName={classes.page}
                             pageLinkClassName={classes.pageLink}
                             marginPagesDisplayed={1}

@@ -11,7 +11,7 @@ const useStyle = makeStyles((theme) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     height: '100%',
-    minHeight: '877px',
+    minHeight: '500px',
   },
   icon: {
     width: '64.17px',
