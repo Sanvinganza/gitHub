@@ -80,6 +80,16 @@ const useStyle = makeStyles((theme) => ({
         fontWeight: '400',
         color: 'black',
     },
+    pagination_container: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    pagination_description: {
+        fontSize: '14px',
+        fontWeight: '400',
+        color: '#808080',
+    },
     pagination: {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -157,7 +167,6 @@ export default function Repositories() {
     let [page, setPage] = useState(0);
 
     let loadRepositories = async (data) => {
-
         setIsLoading(true);
         let response_repos = await fetch('https://api.github.com/users/' + login + '/repos?per_page=4&page=' + (data.selected + 1));
         setIsLoading(false);
@@ -206,23 +215,28 @@ export default function Repositories() {
                             <RepositoriesNotFound />
                     }
                     {repositories.length !== 0 ?
-                        <ReactPaginate
-                            pageCount={repositoriesValue / 4}
-                            previousClassName={classes.previous}
-                            pageRangeDisplayed={matches? 2 : 1}
-                            pageClassName={classes.page}
-                            pageLinkClassName={classes.pageLink}
-                            marginPagesDisplayed={1}
-                            nextClassName={classes.next}
-                            breakLabel={'...'}
-                            containerClassName={matches? classes.pagination : classes.paginationMin}
-                            activeClassName={classes.active}
-                            breakClassName={classes.break}
-                            previousLabel={<div className={classes.previousLabel}></div>}
-                            onPageChange={loadRepositories}
-                            nextLabel={<div className={classes.nextLabel}></div>}
-                            initialPage={page}
-                        />
+                        <div className={classes.pagination_container}>
+                            <div className={classes.pagination_description}>
+                                {(page*4 + 1) + ' - ' +((page*4 + 4 > repositoriesValue? repositoriesValue : page*4 + 4))+ ' of ' + repositoriesValue + ' items'}
+                            </div>
+                            <ReactPaginate
+                                pageCount={repositoriesValue / 4}
+                                previousClassName={classes.previous}
+                                pageRangeDisplayed={matches? 2 : 1}
+                                pageClassName={classes.page}
+                                pageLinkClassName={classes.pageLink}
+                                marginPagesDisplayed={1}
+                                nextClassName={classes.next}
+                                breakLabel={'...'}
+                                containerClassName={matches? classes.pagination : classes.paginationMin}
+                                activeClassName={classes.active}
+                                breakClassName={classes.break}
+                                previousLabel={<div className={classes.previousLabel}></div>}
+                                onPageChange={loadRepositories}
+                                nextLabel={<div className={classes.nextLabel}></div>}
+                                initialPage={page}
+                            />
+                        </div>
                         :
                         false
                     }
